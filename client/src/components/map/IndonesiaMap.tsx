@@ -30,9 +30,17 @@ export function IndonesiaMap({ destinations, selectedId, onSelect }: IndonesiaMa
   ] as any[];
 
   return (
-    <div className="w-full h-full bg-accent/20 brutal-border relative overflow-hidden flex items-center justify-center">
+    <div className="w-full h-full bg-[#1a365d] brutal-border relative overflow-hidden flex items-center justify-center">
+      {/* Ocean Texture/Contour */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none" 
+        style={{
+          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+          backgroundSize: '24px 24px'
+        }} 
+      />
+      
       {/* Decorative map elements */}
-      <div className="absolute top-4 left-4 font-display font-bold text-2xl tracking-tighter opacity-20 pointer-events-none">
+      <div className="absolute top-4 left-4 font-display font-bold text-2xl tracking-tighter text-white opacity-20 pointer-events-none">
         00°00'N 120°00'E
       </div>
       
@@ -42,25 +50,61 @@ export function IndonesiaMap({ destinations, selectedId, onSelect }: IndonesiaMa
           scale: 1600,
           center: [118.0, -2.5] // Centered on Indonesia
         }}
-        className="w-full h-full object-cover"
+        className="w-full h-full"
       >
         <ZoomableGroup zoom={1} maxZoom={4} center={[118.0, -2.5]}>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
-              geographies.map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill={geo.properties.name === "Indonesia" ? "#FFF" : "#E5E7EB"}
-                  stroke="#000"
-                  strokeWidth={geo.properties.name === "Indonesia" ? 1.5 : 0.5}
-                  style={{
-                    default: { outline: "none" },
-                    hover: { fill: geo.properties.name === "Indonesia" ? "#FFD93D" : "#E5E7EB", outline: "none" },
-                    pressed: { outline: "none" },
-                  }}
-                />
-              ))
+              geographies.map((geo) => {
+                const isIndonesia = geo.properties.name === "Indonesia";
+                return (
+                  <React.Fragment key={geo.rsmKey}>
+                    {/* Stepped Contour layers for Indonesia */}
+                    {isIndonesia && (
+                      <>
+                        <Geography
+                          geography={geo}
+                          fill="transparent"
+                          stroke="#000"
+                          strokeWidth={12}
+                          style={{ default: { outline: "none" } }}
+                          className="opacity-5"
+                          transform="translate(6, 6)"
+                        />
+                        <Geography
+                          geography={geo}
+                          fill="transparent"
+                          stroke="#000"
+                          strokeWidth={8}
+                          style={{ default: { outline: "none" } }}
+                          className="opacity-10"
+                          transform="translate(4, 4)"
+                        />
+                        <Geography
+                          geography={geo}
+                          fill="transparent"
+                          stroke="#000"
+                          strokeWidth={4}
+                          style={{ default: { outline: "none" } }}
+                          className="opacity-20"
+                          transform="translate(2, 2)"
+                        />
+                      </>
+                    )}
+                    <Geography
+                      geography={geo}
+                      fill={isIndonesia ? "#fdf6e3" : "#2d3748"}
+                      stroke="#000"
+                      strokeWidth={isIndonesia ? 1.5 : 0.5}
+                      style={{
+                        default: { outline: "none" },
+                        hover: { fill: isIndonesia ? "#FFD93D" : "#2d3748", outline: "none" },
+                        pressed: { outline: "none" },
+                      }}
+                    />
+                  </React.Fragment>
+                );
+              })
             }
           </Geographies>
 
