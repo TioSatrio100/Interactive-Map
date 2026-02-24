@@ -20,6 +20,15 @@ interface IndonesiaMapProps {
 
 export function IndonesiaMap({ destinations, selectedId, onSelect }: IndonesiaMapProps) {
   const [hoveredMarker, setHoveredMarker] = useState<number | null>(null);
+  const [zoom, setZoom] = useState(1);
+
+  const handleZoomIn = () => {
+    if (zoom < 4) setZoom(prev => prev + 0.5);
+  };
+
+  const handleZoomOut = () => {
+    if (zoom > 1) setZoom(prev => prev - 0.5);
+  };
 
   // Fallback map data if none provided to ensure map works during dev
   const defaultMarkers = destinations.length > 0 ? destinations : [
@@ -52,7 +61,12 @@ export function IndonesiaMap({ destinations, selectedId, onSelect }: IndonesiaMa
         }}
         className="w-full h-full"
       >
-        <ZoomableGroup zoom={1} maxZoom={4} center={[118.0, -2.5]}>
+        <ZoomableGroup 
+          zoom={zoom} 
+          maxZoom={4} 
+          center={[118.0, -2.5]}
+          onMoveEnd={({ zoom }) => setZoom(zoom)}
+        >
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => {
@@ -169,6 +183,22 @@ export function IndonesiaMap({ destinations, selectedId, onSelect }: IndonesiaMa
       
       {/* Map Controls overlay */}
       <div className="absolute bottom-4 right-4 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 bg-white brutal-border brutal-shadow p-1">
+          <button 
+            onClick={handleZoomIn}
+            className="w-8 h-8 flex items-center justify-center hover:bg-yellow-400 border-b-2 border-black font-bold text-lg transition-colors"
+            title="Zoom In"
+          >
+            +
+          </button>
+          <button 
+            onClick={handleZoomOut}
+            className="w-8 h-8 flex items-center justify-center hover:bg-yellow-400 font-bold text-lg transition-colors"
+            title="Zoom Out"
+          >
+            -
+          </button>
+        </div>
         <div className="bg-white brutal-border brutal-shadow p-2 text-center font-display font-bold text-xs">
           INTERACTIVE<br/>EXPLORER
         </div>
