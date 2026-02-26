@@ -7,7 +7,7 @@ import {
   ZoomableGroup
 } from "react-simple-maps";
 import { type Destination } from "@shared/schema";
-import { MapPin } from "lucide-react";
+import seaTexturePath from "@assets/Screenshot_2026-02-25_130709_1772128539391.png";
 
 // World map TopoJSON
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -39,12 +39,14 @@ export function IndonesiaMap({ destinations, selectedId, onSelect }: IndonesiaMa
   ] as any[];
 
   return (
-    <div className="w-full h-full bg-[#1a365d] brutal-border relative overflow-hidden flex items-center justify-center">
-      {/* Ocean Texture/Contour */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none" 
+    <div className="w-full h-full bg-[#8fb6d9] brutal-border relative overflow-hidden flex items-center justify-center">
+      {/* Ocean Texture from Screenshot */}
+      <div 
+        className="absolute inset-0 opacity-40 pointer-events-none" 
         style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)`,
-          backgroundSize: '24px 24px'
+          backgroundImage: `url(${seaTexturePath})`,
+          backgroundSize: '400px auto',
+          backgroundRepeat: 'repeat'
         }} 
       />
       
