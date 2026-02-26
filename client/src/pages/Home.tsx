@@ -7,11 +7,12 @@ import { BrutalistCard } from "@/components/ui/BrutalistCard";
 import { BrutalistButton } from "@/components/ui/BrutalistButton";
 import { BrutalistBadge } from "@/components/ui/BrutalistBadge";
 import { DestinationCard } from "@/components/DestinationCard";
-import { useDestinations } from "@/hooks/use-destinations";
+import { STATIC_DESTINATIONS } from "@/lib/static-data";
 import { MapPin, ArrowRight, Activity, Camera, Star } from "lucide-react";
 
 export default function Home() {
-  const { data: destinations = [], isLoading } = useDestinations();
+  const destinations = STATIC_DESTINATIONS;
+  const isLoading = false;
   const [selectedDestId, setSelectedDestId] = useState<number | null>(null);
 
   // Filter for featured section
